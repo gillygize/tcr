@@ -8,7 +8,7 @@ module TCR
       if File.exists?(filename)
         @recording = false
         @contents = File.open(filename) { |f| f.read }
-        @sessions = JSON.parse(@contents)
+        @sessions = YAML.load(@contents)
       else
         @recording = true
         @sessions = []
@@ -28,13 +28,13 @@ module TCR
     def append(session)
       raise "Can't append session unless recording" unless recording?
       @sessions << session
-      File.open(filename, "w") { |f| f.write(JSON.pretty_generate(@sessions)) }
+      File.open(filename, "w") { |f| f.write(YAML.dump(@sessions)) }
     end
 
     protected
 
     def filename
-      "#{TCR.configuration.cassette_library_dir}/#{name}.json"
+      "#{TCR.configuration.cassette_library_dir}/#{name}.yaml"
     end
   end
 end

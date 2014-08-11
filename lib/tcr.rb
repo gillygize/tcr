@@ -4,7 +4,6 @@ require "tcr/errors"
 require "tcr/recordable_tcp_socket"
 require "tcr/version"
 require "socket"
-require "yaml"
 
 module TCR
   extend self

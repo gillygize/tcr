@@ -8,7 +8,7 @@ module TCR
       if File.exists?(filename)
         @recording = false
         @contents = File.open(filename) { |f| f.read }
-        @sessions = YAML.load(@contents)
+        @sessions = Marshal.load(@contents)
       else
         @recording = true
         @sessions = []
@@ -28,7 +28,7 @@ module TCR
     def append(session)
       raise "Can't append session unless recording" unless recording?
       @sessions << session
-      File.open(filename, "w") { |f| f.write(YAML.dump(@sessions)) }
+      File.open(filename, "w") { |f| f.write(Marshal.dump(@sessions)) }
     end
 
     protected

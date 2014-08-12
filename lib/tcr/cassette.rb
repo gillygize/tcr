@@ -8,7 +8,7 @@ module TCR
       if File.exists?(filename)
         @recording = false
         @contents = File.open(filename) { |f| f.read }
-        @sessions = Marshal.load(@contents)
+        @sessions = eval(File.open(filename).read)
       else
         @recording = true
         @sessions = []
@@ -28,13 +28,13 @@ module TCR
     def append(session)
       raise "Can't append session unless recording" unless recording?
       @sessions << session
-      File.open(filename, "w") { |f| f.write(Marshal.dump(@sessions)) }
+      File.open(filename, "w") { |f| f.write(@sessions) }
     end
 
     protected
 
     def filename
-      "#{TCR.configuration.cassette_library_dir}/#{name}.yaml"
+      "#{TCR.configuration.cassette_library_dir}/#{name}.json"
     end
   end
 end
